@@ -6,6 +6,18 @@
 
 ---
 
+## Demo Screenshots
+
+### Giao Diện Chính
+---
+| ![Demo 1](./assets/1.png) | ![Demo 2](./assets/2.png) | ![Demo 3](./assets/3.png) |
+| ![Demo 4](./assets/4.png) | ![Demo 5](./assets/5.png) | ![Demo 6](./assets/callTA.png) |
+
+### Email Notification
+![Email Service](./assets/mail.png)
+
+---
+
 ## 🎯 Mục Tiêu
 
 TA_Chatbot là một **AI Teaching Assistant** 24/7 cho khóa học **Lập trình C/C++ cơ bản (CS101)**, được thiết kế để:
@@ -332,19 +344,5 @@ TA_Chatbot/
 - **RAG**: FAISS
 - **Frontend**: Streamlit
 - **Language**: Python 3.9+
-
----
-
-## � Demo Screenshots
-
-### Giao Diện Chính
----
-| ![Demo 1](./assets/1.png) | ![Demo 2](./assets/2.png) | ![Demo 3](./assets/3.png) |
-| ![Demo 4](./assets/4.png) | ![Demo 5](./assets/5.png) | ![Demo 6](./assets/callTA.png) |
-
-### Email Notification
-![Email Service](./assets/mail.png)
-
----
 
 **✅ Ready for production deployment!** 🚀
