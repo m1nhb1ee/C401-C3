@@ -26,6 +26,16 @@ python -m rag.indexer  # One-time
 ```
 
 ### Bước 2: Chạy# 🎓 AI Trợ Giảng (Online TA) - Implementation Plan
+```bash
+streamlit run app.py
+```
+
+### Bước 3: Test
+```bash
+python test_new_rules.py
+```
+
+---
 
 ## Mô tả tổng quan
 
@@ -250,17 +260,6 @@ TA_Chatbot/
 | 4 | Reload trang Streamlit | → Toàn bộ Lịch sử hiển thị trên Sidebar có thể được load lại, context không bị rớt. |
 | 5 | "Cách nấu phở bò?" | → AI Từ chối lịch sự, tránh gọi tool. |
 
-```bash
-streamlit run app.py
-```
-
-### Bước 3: Test
-```bash
-python test_new_rules.py
-```
-
----
-
 ## 📋 Quy Tắc Xử Lý Thông Tin (3 Rules)
 
 ### **Rule 1: Phân Loại Chính Xác**
@@ -298,18 +297,6 @@ python test_new_rules.py
 ✅ TEST 4: TRIGGER 1 (Hỏi TA giúp) → PASS
 ```
 
----
-
-## 📚 Documentation
-
-| File | Purpose |
-|------|---------|
-| [UPDATE_SUMMARY.md](UPDATE_SUMMARY.md) | Tóm tắt update chi tiết |
-| [INFORMATION_PROCESSING_RULES.md](INFORMATION_PROCESSING_RULES.md) | Quy tắc xử lý thông tin |
-| [DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md) | Hướng dẫn phát triển |
-| [DEBUG_REPORT.md](DEBUG_REPORT.md) | Các lỗi đã sửa |
-
----
 
 ## 💬 Example Conversations
 
@@ -357,15 +344,6 @@ python test_new_rules.py
 
 ### Email Notification
 ![Email Service](./assets/mail.png)
-
----
-
-## �📞 Support
-
-**Need help?**
-- Check [INFORMATION_PROCESSING_RULES.md](INFORMATION_PROCESSING_RULES.md)
-- See examples in [test_new_rules.py](test_new_rules.py)
-- Read [DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)
 
 ---
 
