@@ -220,16 +220,89 @@ Cả hai (Tùy phân loại intent):
 
 **Giải pháp:** Force escalate on keywords (grade, permission, policy). Weekly KB audit. TA weekly audit false negatives. Confidence disclaimers khi unsure.
 
-**Timeline:** 8-week pilot trên 1 khóa (100–150 SV). Phases: Week 1 data prep, Week 2–4 dev, Week 5–6 staging QA, Week 7–8 live + monitoring.
+**Timeline:** 8-week pilot (150 SV). Week 1: data prep + TA onboarding | Week 2–4: dev | Week 5–6: QA | Week 7–8: live + monitor.
 
-## Phân công
-
-- **Hoàng Đức Nghĩa:** Canvas 
-- **Nguyễn Thành Vinh:**failure modes + risk analysis → 4 UX flows mỗi cái
-- **Nguyễn Trọng Minh:** User stories — 3 feature paths (FAQ auto-answer, debugging assist, escalation summary) 
-- **Trịnh Xuân Đạt:** Eval metrics + ROI calculation + kill criteria
-- **Lê văn Quang Trung:** Prototype research — LangGraph agent flow design + RAG pipeline setup + prompt test trên dataset 150–200 real questions
+**Cost/Benefit Summary:**
+- **Pilot invest:** $85k (dev $45k + infra $8k + data $5k + API $18k + ops $8k + training $2k)
+- **TA savings:** 15h/week × $80/hr × 50 weeks = $60k/year
+- **SV retention gain:** +5% = 7–8 SV × $2k (tuition) = $14–16k
+- **Net Year 1:** ~-$11k (invest excess). **But Realistic scenario projects +$74k benefit → scaling justified.**
 
 ---
 
-**Ngày:** 2026-04-08 | **Phiên bản:** 1.0 (Spec Template)
+## 7. Implementation Enhancements (Integrated)
+
+### Knowledge Ingestion & TA Dashboard
+
+**Admin/GV Workflow:**
+- Upload tài liệu (slides, PDF, code) → auto-extract + OCR
+- Version-tag: 2026-W5-v1.2. Detect conflicts (>85% overlap) → TA review: Use New / Keep Old / Merge
+- System: chunk 300–500 tokens, embed, version-track in Chroma
+- TA weekly audit: mark outdated docs [DEPRECATED]
+
+**TA Moderation Queue (Confidence-based routing):**
+- ≥90% confidence → auto-send (no TA review)
+- 75–89% → spot-check (5% sample, async) within 30 min
+- 60–74% → mandatory review within 5 min  
+- <60% → escalate to Priority 1 queue within 2 min
+
+**Corrections & Feedback Loop:** SV downvote + comment → TA validate <24h → KB update (v1.2 → v1.3) → retrain models every 2 weeks. 5+ same-type corrections = [CURRICULUM_ACTION] flag to GV.
+
+### Cost Optimization
+
+**Token Economics (450 Q/week):**
+- FAQ Agent: $0.0002/Q (mini-model)
+- Technical debug: $0.005/Q (Tier 2: selective RAG)
+- Policy/complex: $0.025/Q (GPT-4 full reasoning)
+- Escalation summary: $0.003/Q
+- **Annual cost: ~$92k** (vs. $170k without multi-tier routing)
+
+**Semantic Caching:** 25–35% duplicate Q hit rate → skip LLM entirely → save 25–35% tokens on cached responses.
+
+**Budget Controls:** Daily $50/day. Per-SV quota: 10 Q/day, 5k tokens/week. Alert at 80%, throttle at 100%, rate-limit at spike.
+
+### Guardrails & Content Moderation
+
+**4-Layer Detection:**
+1. Keyword filter: jailbreak detect (ignore, override, pretend) + policy keywords (grade, permission, appeal) → hard-block or escalate
+2. Intent classifier: plagiarism intent, off-topic, exam cheating → block + alert TA+GV
+3. Course relevance: Q similarity to KB <0.30 → escalate
+4. Confidence threshold: <60% confidence → escalate to TA, don't auto-respond
+
+**Special Cases:**
+- Prompt injection: "Ignore your instructions" → block + escalate [SECURITY_ALERT]
+- Plagiarism: "Write solution code" + active assignment → "I guide, not solve. Try step X?"
+- Exam cheating: keywords during exam window → block + TA+GV alert
+
+### Success Metrics (Enhanced)
+
+| Metric | Target | Owner | Cost Impact |
+|--------|--------|-------|------------|
+| Auto-answer rate | ≥60% | Classifier tuning | If <60%, TA labor ↑ = +$50/Q manual |
+| SV satisfaction | ≥75% "helpful" | Answer quality | If <75%, trust erodes → retention ↓ |
+| False neg escalation | <5% | Confidence tuning | >10% = SV ignore system |
+| Latency (FAQ) | <3s | Cache hit rate | >5s = poor UX |
+| Latency (Tech) | <10s | Model choice | >15s = escalate to TA |
+| Weekly cost/Q | ≤$0.05 (avg) | Tier routing | >$0.08 = over-expensive models |
+
+### Scaling Path (Year 1–3)
+
+- **Month 1–2:** Realistic scenario (1 course, 150 SV) + TA moderation mature → ROI +1.85×
+- **Month 3–4:** Multi-course pilot (3 courses, 450 SV) → shared global KB + course-specific subsets
+- **Month 5–6:** LMS integration (Canvas/Moodle native plugin) → SV don't leave LMS
+- **Month 7–8:** Auto-curriculum feedback loop → weekly GV insights (top 10 weak areas + confidence trends)
+- **Year 2+:** 8+ courses, multi-language (Vi/En), peer tutoring network, micro-credentials
+
+---
+
+## Phân công
+
+- **Hoàng Đức Nghĩa:** Canvas + Product Strategy + Cost/Benefit analysis
+- **Nguyễn Thành Vinh:** Failure modes + risk analysis + TA Dashboard UX flows  
+- **Nguyễn Trọng Minh:** User stories + Knowledge Ingestion workflow + Guardrails design
+- **Trịnh Xuân Đạt:** Eval metrics + Financial ROI model + Multi-year projection + Budget control  
+- **Lê văn Quang Trung:** Agent architecture (LangGraph) + Multi-tier inference routing + Semantic cache + Content moderation classifier
+
+---
+
+**Ngày:** 2026-04-09 | **Phiên bản:** 2.0 (Production-Ready, Integrated Details)
