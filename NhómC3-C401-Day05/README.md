@@ -345,4 +345,8 @@ TA_Chatbot/
 - **Frontend**: Streamlit
 - **Language**: Python 3.9+
 
+**Link gitHub demo**
+  
+[https://github.com/kagamikuro1024/TA_ChatBot](https://github.com/kagamikuro1024/TA_ChatBot)
+
 **✅ Ready for production deployment!** 🚀
