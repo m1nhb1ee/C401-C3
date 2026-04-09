@@ -17,7 +17,7 @@
 Cả hai (Tùy phân loại intent):
 - FAQ/routine → Tự động hoàn toàn (TA không can thiệp)
 - Lỗi kỹ thuật → Augment (AI hướng dẫn, sinh viên thử, TA kiểm tra chất lượng thread)
-- Phức tạp/mơ hồ → Escalate với context (TA quyết định)
+- Phức tạp/mơ hồ → Escalate với context (User quyết định)
 
 **Justify:** Mô tả lỗi của học viên thường mơ hồ hoặc AI có độ tự tin (confidence) thấp. Nếu để automation hoàn toàn trong các ca phức tạp sẽ gây nguy hiểm; kết hợp augmentation và escalation (chuyển tiếp cho TA) giúp đảm bảo an toàn và tin cậy.
 
