@@ -153,9 +153,9 @@
 
 - **Hoàng Đức Nghĩa:** Canvas 
 - **Nguyễn Thành Vinh:**failure modes + risk analysis → 4 UX flows mỗi cái
-- **Lê văn Quang Trung:** User stories — 3 feature paths (FAQ auto-answer, debugging assist, escalation summary) 
+- **Nguyễn Trọng Minh:** User stories — 3 feature paths (FAQ auto-answer, debugging assist, escalation summary) 
 - **Trịnh Xuân Đạt:** Eval metrics + ROI calculation + kill criteria
-- **Nguyễn Trọng Minh:** Prototype research — LangGraph agent flow design + RAG pipeline setup + prompt test trên dataset 150–200 real questions
+- **Lê văn Quang Trung:** Prototype research — LangGraph agent flow design + RAG pipeline setup + prompt test trên dataset 150–200 real questions
 
 ---
 
