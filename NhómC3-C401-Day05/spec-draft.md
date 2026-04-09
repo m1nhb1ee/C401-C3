@@ -10,15 +10,16 @@
 
 |   | Value | Trust | Feasibility |
 |---|-------|-------|-------------|
-| **Học viên** | Chờ 4–24h để được TA giúp về FAQ/lỗi cơ bản (cú pháp, môi trường, cài đặt). Pain: mạch học bị đứt, tỷ lệ bỏ cuộc cao. AI trả lời FAQ ngay (<3s), hướng dẫn debug step-by-step từ tài liệu khóa học (Socratic, không cho đáp án). | **Đúng:** FAQ được trả lời, sinh viên tiếp tục. **Sai:** AI gợi ý hướng sai → sinh viên mất thêm thời gian. **Không chắc:** Chuyện gì xảy ra? **Khôi phục:** Nút "Hỏi TA thật" luôn hiển thị, TA audit hàng tuần (50 response ngẫu nhiên, score 0/1/2 hữu ích). Giải pháp: disclaimer khi confidence <80%, escalate nếu cần. | Latency <3s (FAQ) / <10s (tech via RAG). Cost ~$0.02–0.05/câu hỏi (LLM API). Stack: Chroma vector DB + semantic search trên tài liệu khóa (slide PDF, code mẫu, FAQ markdown). Risk: mô tả lỗi mơ hồ ("code không chạy") → hint chung chung → học viên thất vọng. [?] latency thực tế |
-| **TA (Hỗ trợ giảng viên)** | Xử lý 50–100 câu/ngày. 60–70% FAQ (link, lịch, quy tắc nộp) — không tạo giá trị cao, kiệt sức. AI tự trả lời FAQ, TA chỉ nhận escalation + summary. Tiết kiệm TA 3–5h/ngày → focus vào ca debug khó. | **Đúng:** Cần escalate, TA nhận context. **Sai:** Logic escalate bỏ sót câu khó hoặc escalate câu dễ. **Không chắc:** Audit như thế nào? **Khôi phục:** Audit hàng tuần: đo false positive (escalate khi không nên) + false negative (không escalate khi nên). Target <5% false negative, nếu không thì pause + retune. | Escalation rule-based + LLM confidence (threshold <60% HOẶC timeout >10s HOẶC "need help" → escalate). Dashboard monitor auto-responses. Tech: web app đơn giản + Discord/Slack API. [?] baseline escalation rate từ dữ liệu lịch sử |
+| **Câu hỏi guide** | User nào? Pain gì? AI giải quyết gì mà cách hiện tại không giải được? | Khi AI sai thì user bị ảnh hưởng thế nào? User biết AI sai bằng cách nào? User sửa bằng cách nào? | Cost bao nhiêu/request? Latency bao lâu? Risk chính là gì? |
+| **Trả lời** |**Học viên:** Chờ 4–24h để được giúp lỗi cơ bản (pain: đứt mạch học). AI trả lời FAQ <3s & hướng dẫn debug Socratic từ tài liệu chuẩn.<br> **TA:** Xử lý 50–100 câu/ngày (60-70% lặp lại). AI tự xử lý FAQ, TA chỉ tập trung ca khó, tiết kiệm 3–5h/ngày. |**Ảnh hưởng:** AI gợi ý sai hướng làm SV mất thêm thời gian.<br> **Nhận biết:** Disclaimer khi confidence <80%; TA audit 50 câu ngẫu nhiên hàng tuần (score 0/1/2).<br> **Sửa:** Nút "Hỏi TA thật" luôn hiển thị; SV downvote + comment để log correction. |**Cost:** $0.02–$0.05/câu hỏi. Latency: <3s (FAQ), <10s (RAG).<br> **Risk:** SV mô tả lỗi mơ hồ ("code không chạy") dẫn đến gợi ý chung chung. Hệ thống dùng Chroma DB + Semantic Search trên tài liệu khóa học. |
 
-**Tự động hay augmentation?** ☑ Augmentation có phần tự động
+**Tự động hay augmentation?** 
+Cả hai (Tùy phân loại intent):
 - FAQ/routine → Tự động hoàn toàn (TA không can thiệp)
 - Lỗi kỹ thuật → Augment (AI hướng dẫn, sinh viên thử, TA kiểm tra chất lượng thread)
 - Phức tạp/mơ hồ → Escalate với context (TA quyết định)
 
-**Lý do:** Mô tả lỗi của user thường mơ hồ HOẶC AI confidence thấp → tự động nguy hiểm. Augmentation + escalation an toàn hơn.
+**Justify:** Mô tả lỗi của học viên thường mơ hồ hoặc AI có độ tự tin (confidence) thấp. Nếu để automation hoàn toàn trong các ca phức tạp sẽ gây nguy hiểm; kết hợp augmentation và escalation (chuyển tiếp cho TA) giúp đảm bảo an toàn và tin cậy.
 
 **Learning signal:**
 
@@ -28,7 +29,8 @@
 | 2 | Product thu signal gì để biết tốt lên hay tệ đi? | Hàng tuần: % auto-responses, F1 per intent class, false pos/neg escalation rate, student "hữu ích" rate. Top 5 failure modes by frequency. |
 | 3 | Data thuộc loại nào? | ☑ Domain-specific (KB khóa học proprietary) · ☑ Human-judgment (TA labels) · ☑ Real-time (production errors) |
 
-**Có giá trị biên tế?** Có — error patterns khóa học ("lỗi hàng đầu tuần 3 Python") không có trong public LLM. Weekly curriculum improvement report cho giảng viên là sản phẩm mới.
+**Có giá trị biên tế?** 
+Có. Các mẫu lỗi (error patterns) đặc thù của khóa học (ví dụ: "lỗi phổ biến tuần 3") là dữ liệu độc quyền, không có trong các mô hình LLM công cộng. Dữ liệu này giúp tạo ra báo cáo cải tiến học liệu hàng tuần cho giảng viên.
 
 ---
 
