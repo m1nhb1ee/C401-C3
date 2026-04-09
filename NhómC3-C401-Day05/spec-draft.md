@@ -71,16 +71,16 @@
 
 ## 3. Chỉ số Đánh giá + Ngưỡng
 
-**Optimize precision hay recall?** ☑ Precision (tránh escalate Q tầm thường thành complex, lãng phí TA time) + ☑ Recall (không tự động trả lời Q mà không chắc, risk sai lệch)
+**Optimize precision hay recall?** ☑ Precision (tránh escalate Q (câu hỏi) tầm thường thành complex, lãng phí TA time) + ☑ Recall (không tự động trả lời câu hỏi mà không chắc, tránh risk sai lệch)
 
 | Chỉ số | Target | Red flag (dừng) | Cách đo |
 |--------|--------|-----------------|------------|
-| % tự trả lời (không escalate) | ≥60% | <40% | Count auto-responses / total Q |
-| "Hữu ích" rate sinh viên | ≥75% | <60% | Thumbs up / total responses |
+| % tự trả lời (không escalate cho TA) | ≥60% | <40% | Count auto-responses / total Q |
+| sinh viên đánh giá "Hữu ích" | ≥75% | <60% | Thumbs up / total responses |
 | Response latency (FAQ) | <3s | >5s | Latency logs |
 | Response latency (Tech) | <10s | >15s | Latency logs |
-| False negative escalation | <5% | >8% | TA audit hàng tuần (sample 50 auto-responses) |
-| Intent classifier F1 | >85% | <75% | Hold-out test set (50 Q) |
+| False negative escalation | <5% | >8% | TA soát lại hàng tuần (tầm 50 câu trả lời tự động) |
+| Intent classifier F1 | >85% | <75% | Phân loại với test set (gồm 50 câu hỏi chưa có trong database) |
 | System uptime | ≥99% | <95% trong 2 ngày | Monitoring dashboard |
 
 ---
@@ -89,9 +89,9 @@
 
 | # | Nguyên nhân | Hậu quả | Giải pháp |
 |---|---------|-------------|-----------|
-| **1. Mô tả error mơ hồ** | SV nói "code không chạy" không có stack trace, error message, hoặc minimal reproducible example (MRE). | AI give generic debugging guide (check imports, syntax, setup...). SV try all, none work. Thất vọng, escalate. TA spend 10 min extract actual error từ SV message. | Detect keyword absence (no "Error:", no code snippet) → prompt SV "Please share error message or code" before AI responds. Nếu baseline Q quá short (<20 tokens), ask thêm context. Force-escalate nếu no response sau 2 rounds. |
-| **2. KB lỗi thời/conflict** | KB có old slide (v1.0) + new slide (v2.0) trong cùng vector DB. Retrieval return both → synthesis LLM confused hoặc mix old+new info. | SV follow AI advice từ old material → khác với cái giáo viên dạy bây giờ → SV miss current week's lessons. | 1) Version-mark all KB docs (slide_Week3_v2.0.pdf). 2) Weekly doc audit before course week starts. 3) Khi TA fix 1 question, mark doc "needs review" → lecturer check. 4) Nếu AI retrieve docs >3 versions cũ, flag [outdated]. |
-| **3. Escalation logic miss ca khó** | Edge case question về course policy, academic integrity, grade appeal, permission request. Classifier mark "Technical" → auto-answer → SV think problem solved → sau nhận ra AI sai → trust broken. | SV learn AI không đáng tin trên policy questions. Stop dùng system hoặc làm sai dựa vào bad AI advice. | 1) Expand "escalate keywords": ["grade", "deadline", "permission", "appeal", "policy", "exception"]. 2) Lower confidence threshold cho policy-adjacent Q. 3) Weekly audit: TA flag "AI should escalate cái này" → adjust thresholds. 4) Force-escalate nếu question mention "course policy" hoặc "tôi có thể...". |
+| **1. Mô tả error mơ hồ** | SV nói "code không chạy" không có stack trace, error message, hoặc minimal reproducible example (MRE). | AI đưa ra cách check lỗi chung chung, thiếu cụ thể (check imports, syntax, setup...). SV thử nhưng không thành. Thất vọng, escalate. TA spend 10 min extract actual error từ SV message. | Detect keyword absence (no "Error:", no code snippet) → prompt SV "Please share error message or code" before AI responds. Nếu baseline Q quá short (<20 tokens), hỏi thêm context. Buộc chuyển tiếp nếu no response sau 2 rounds. |
+| **2. KB lỗi thời/conflict** | KB có old slide (v1.0) + new slide (v2.0) trong cùng vector DB. Truy vấn trả về cả hai → thông tin tổng hợp từ LLM bị mix old+new info. | SV follow AI advice từ old material → khác với cái giáo viên dạy bây giờ → SV miss/ không hiểu current week's lessons. | 1) Version-mark all KB docs (slide_Week3_v2.0.pdf). 2) Kiểm tra tài liệu trước khi course week bắt đầu. 3) Khi TA fix 1 question, mark doc "needs review" → thông báo để giảng viên check. 4) Nếu AI retrieve docs >3 versions cũ, flag [outdated]. |
+| **3. Escalation logic miss ca khó** | Edge case question về course policy, academic integrity, grade appeal, permission request. Classifier mark "Technical" → auto-answer → SV think problem solved → sau nhận ra AI sai → trust broken. | SV nhận ra AI không đáng tin trên policy questions. Dừng dùng system hoặc làm sai do bad AI advice. | 1) Mở rộng "escalate keywords": ["grade", "deadline", "permission", "appeal", "policy", "exception"]. 2) Giảm ngưỡng tự tin cho request liên quan tới policy Q. 3) Kiểm tra định kỳ: TA flag "AI should escalate cái này" → adjust thresholds. 4) Buộc chuyển tiếp cho TA nếu question mention "course policy" hoặc "tôi có thể...". |
 
 ---
 
